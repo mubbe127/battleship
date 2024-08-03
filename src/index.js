@@ -1,32 +1,37 @@
 export { ship };
 
-function ship(length) {
-  let hit = 0;
-  return {
+class ship {
+    
+    constructor(length) {
+    this.hit = 0
+    this.length=length
+    }
+  
     getLength() {
-      return length;
-    },
+      return this.length;
+    }
 
     getHitCount() {
-      return hit;
-    },
+      return this.hit;
+    }
     incrementHit() {
-      if (hit >= length) {
+      if (this.hit >= this.length) {
         return;
       }
-      hit++;
-      return hit;
-    },
+      this.hit++;
+      return this.hit;
+    }
 
     isSunk() {
-      if (length === hit) {
+      if (this.length === this.hit) {
         return true;
       } else {
         return false;
       }
-    },
-  };
+    }
+  
 }
+
 function cell(i, j) {
   this.value = [i, j];
   this.link = [];
@@ -92,20 +97,96 @@ class gameBoard {
     let array = [];
     moves.forEach(([nx, ny]) => {
       if (this.isWithinBounds(nx, ny)) {
-        console.log("jiep");
+       
 
         array.push([nx, ny]);
       } else array.push(0);
-
-      return array;
     });
 
-    return array;
+    let finalarray = [];
+
+    console.log(array)
+
+    array.forEach((item, index) => {
+      let collided = false;
+      if (!(item instanceof Array)) {
+        return false;
+      }
+      let [a,b] = [x,y]
+      console.log(x,y)
+      console.log(a,b)
+      const [nx, ny] = item;
+      if (this.board[a][b] instanceof ship) {
+        console.log([a,b])
+         console.log("this can jiep")
+        return false;
+      }
+      if (index === 0) {
+        while (nx > a) {
+          if (this.board[a++][b] instanceof ship) {
+            console.log(nx)
+            console.log("index 0")
+            console.log(a)
+            collided = true;
+          }
+        }
+        if (collided === false) {
+          finalarray.push(item);
+        } else {
+            console.log(a)
+            finalarray.push(0);}
+            collided=false
+      }
+      if (index === 1) {
+        while (a > nx) {
+          if (this.board[a--][b] instanceof ship) {
+            collided = true;
+            console.log("index 1")
+            
+          }
+        }
+        if (collided === false) {
+          finalarray.push(item);
+        } else {
+            finalarray.push(0)
+            collided=false}
+      }
+      if (index === 2) {
+        while (ny > b) {
+          if (this.board[a][b++] instanceof ship) {
+            collided = true;
+            console.log("index 2")
+            
+          }
+        }
+        if (collided === false) {
+          finalarray.push(item);
+        } else {
+            finalarray.push(0)
+            collided=false}; 
+      }
+      if (index === 3) {
+        while (a > ny) {
+          if (this.board[a][b--] instanceof ship) {
+            console.log("index 3")
+            collided = true;
+            
+          }
+        }
+        if (collided === false) {
+          finalarray.push(item);
+        } else {
+            collided=false
+            finalarray.push(0)};
+      }
+    });
+    return finalarray
   }
 
-
   placeTheShip(x, y, length, move) {
-     let array = this.battlemove(x, y, length);
+    let array = this.battlemove(x, y, length);
+
+    console.log(array[0])
 
     switch (move) {
       case "up":
@@ -129,7 +210,7 @@ class gameBoard {
       console.log("jiep");
       return;
     }
-    const newShip = ship(length);
+    const newShip = new ship(length);
     if (y === w && z >= x) {
       this.board[x][y] = newShip;
       while (z >= x) {
@@ -153,6 +234,7 @@ class gameBoard {
 }
 
 const thegame = new gameBoard();
+thegame.placeTheShip(6,0,2, "down") 
+thegame.placeTheShip(4,0,2, "down") 
+console.log(thegame.board[5][0])
 
-console.log(thegame.placeTheShip(5, 0, 3, "down"));
-console.log(thegame.board[2][0])

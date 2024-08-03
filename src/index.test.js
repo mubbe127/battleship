@@ -3,7 +3,7 @@ import {ship} from "./index.js"
 describe('matching cities to foods', () => {
     let theship;
     beforeEach(() => {
-      theship = ship(4);
+      theship =  new ship(4);
       theship.incrementHit()
       theship.incrementHit()
       theship.incrementHit()
