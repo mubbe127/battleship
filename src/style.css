@@ -1,0 +1,31 @@
+* {
+    margin: 0;
+    padding: 0;
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+}
+
+.container {
+    display: flex;
+    margin: 20vh auto;
+    width: 800px;
+}
+
+.gameboard {
+border: black 1px solid;
+ display: grid;
+ grid-template-columns: repeat(10,30px);
+ grid-template-rows: repeat(10,30px);
+ margin: 30px;
+
+}
+
+.gamecell {
+    border: 1px solid black;
+    cursor: pointer;
+}
+.missed::after {
+
+    content: url("./dot-svgrepo-com.svg");
+ 
+
+}

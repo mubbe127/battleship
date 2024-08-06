@@ -1,4 +1,4 @@
-import {ship} from "./index.js" 
+import {ship} from "./module.js" 
 
 describe('matching cities to foods', () => {
     let theship;
