@@ -5,6 +5,7 @@ class ship {
     this.hit = 0;
     this.length = length;
     this.coordinates = [];
+    this.borders = [];
   }
 
   getLength() {
@@ -40,9 +41,10 @@ function cell(i, j) {
 }
 
 class gameBoard {
-  constructor() {
+  constructor(player) {
     this.board = this.createArray();
     this.ships = [];
+    this.player=player
   }
 
   createArray() {
@@ -152,8 +154,10 @@ class gameBoard {
       if (index === 3) {
         while (b > ny) {
           b--;
-          if (this.board[a][b].ship instanceof ship ||
-            !this.board[x][y].validCell) {
+          if (
+            this.board[a][b].ship instanceof ship ||
+            !this.board[x][y].validCell
+          ) {
             console.log("index 3");
             collided = true;
           }
@@ -196,75 +200,78 @@ class gameBoard {
       /* denna if testar att om funktionen skulle matas koordinater
       att x eller y har samma koordinat som slutkordinat(vilket innebär en rak skepp) */
       if (x !== z && y !== w) {
-      
         return;
       }
       const newShip = new ship(length);
       this.ships.push(newShip);
       this.board[x][y].ship = newShip;
+      this.board[x][y].validCell = false;
       newShip.coordinates.push([x, y]);
       if (y === w && z >= x) {
         while (z > x) {
-          x++
+          x++;
           this.board[x][y].ship = newShip;
           newShip.coordinates.push([x, y]);
-      
+          this.board[x][y].validCell = false;
         }
-      }
-      else if(y === w && x >= z) {
+      } else if (y === w && x >= z) {
         while (x > z) {
-          x--
+          x--;
           this.board[x][y].ship = newShip;
+          this.board[x][y].validCell = false;
           newShip.coordinates.push([x, y]);
-    
         }
-      }
-      else if(x === z && w >= y) {
+      } else if (x === z && w >= y) {
         while (w > y) {
-          y++
+          y++;
           this.board[x][y].ship = newShip;
+          this.board[x][y].validCell = false;
+          newShip.coordinates.push([x, y]);
+        }
+      } else if (x === z && y >= w) {
+        while (y > w) {
+          y--;
+          this.board[x][y].ship = newShip;
+          this.board[x][y].validCell = false;
           newShip.coordinates.push([x, y]);
         }
       }
-      else if(x===z && y> w) {
-        while (y>=w) {
-          y--
-          this.board[x][y].ship = newShip;
-          newShip.coordinates.push([x, y]);
-        }
+
+      function containsCoordinate(arr, coord) {
+        return arr.some(([x, y]) => x === coord[0] && y === coord[1]);
       }
 
-      
-    newShip.coordinates.forEach((item)=> {
+      newShip.coordinates.forEach((item) => {
+        const [nx, ny] = item;
 
-      const [nx,ny] = item
-
-      const newarray = hej(nx,ny).filter(([nz,nw])=> this.isWithinBounds(nz,nw))
-      newarray.forEach(([nx,ny]) => {
-        
-        this.board[nx][ny].validCell=false
-      })
-    })
-    
+        const newarray = hej(nx, ny).filter(([nz, nw]) =>
+          this.isWithinBounds(nz, nw),
+        );
+        newarray.forEach(([nx, ny]) => {
+          this.board[nx][ny].validCell = false;
+          if (!this.board[nx][ny].ship && !containsCoordinate(newShip.borders, [nx,ny])) {
+            newShip.borders.push([nx, ny]);
+          }
+        });
+      });
     } else {
       console.log("No path found");
     }
 
     /* function for making the cells bording ship invalid */
-    function hej(x,y) {
-    const bordingCells = [
-     [x+1, y], 
-     [x-1, y],
-     [x,y+1],
-     [x,y-1],
-     [x+1,y+1],
-     [x+1,y-1],
-     [x-1, y+1],
-     [x-1,y-1]
-    ]
-    return bordingCells
-  }
-
+    function hej(x, y) {
+      const bordingCells = [
+        [x + 1, y],
+        [x - 1, y],
+        [x, y + 1],
+        [x, y - 1],
+        [x + 1, y + 1],
+        [x + 1, y - 1],
+        [x - 1, y + 1],
+        [x - 1, y - 1],
+      ];
+      return bordingCells;
+    }
   }
   recieveAttack([x, y]) {
     if (
@@ -278,8 +285,6 @@ class gameBoard {
     } else {
       this.board[x][y].miss = true;
     }
-
-    
   }
 
   allShipSunk() {
@@ -289,26 +294,11 @@ class gameBoard {
 
 class Player {
   constructor(name) {
-    this.name = this.gameBoard = new gameBoard();
+    this.name = name,
+    this.gameBoard = new gameBoard(name);
   }
 
   attack(playerBoard, [x, y]) {
     playerBoard.recieveAttack([x, y]);
   }
 }
-
-const thegame = new gameBoard();
-
-thegame.placeTheShip(0,1, 2, "right")
-
-thegame.placeTheShip(0)
-
-
-
-
-
-
-console.log(thegame.board[1][0]);
-console.log(thegame.board[0][1]);
-console.log(thegame.board[1][1]);
-console.log(thegame.board[6][3])
