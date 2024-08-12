@@ -1,25 +1,157 @@
 * {
     margin: 0;
     padding: 0;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif
+    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
+    font-size: 16px;
 }
-.headContainer {
-    display:flex;
-    margin-left: 200px;
-    width: 800px;
-    gap:20%;
+
+h1 {
+margin-top: 5%;
+  text-align: center;
+  font-size: 3rem;
 }
-.container {
+
+.winnerHeader {
+    margin-top: 40px;
+    text-align: center;
+    font-size: 1.5rem;
+}
+
+.playercontainer {
+    width: 300px;
+    margin: 6% auto;
     display: flex;
     flex-direction: column;
-   
+    gap: 15px;
+}
+
+label {
+
+    display: inline-block;
+    width: 100px;
+}
+
+input {
+
+    width: 167px;
+    margin-left: 7px;
+}
+select {
+    width: 170px;
+    margin-left: 5px;
+}
+
+.startgameButton button {
+
+    width: 278px;
+    height: 25px;
+
+
+}
+
+.startgameButton {
+    margin-top: 15px;
+    width: 300px;
+
+}
+
+.headGameContainer {
+    display:flex;
+    flex-direction: column;
+    width: 800px;
+    gap:20%;
+    margin: 5% auto;
+}
+
+.playerheader {
+
+    position: absolute;
+    width: 300px;
+    bottom: -10px;
+    left: 30px;
+    font-size: 30px;
+  
+}
+.gridtextone {
+    position: absolute;
+    left: 30px;
+}
+
+.gridtexttwo {
+
+    position: absolute;
+    left: 390px;
+}
+.container {
+    position: relative;
+    display: none;
+    flex-direction: row-reverse;
+    justify-content: start;
+    
+}
+
+.container.show {
+    display:flex;
 }
 
 .container2 {
-    display: flex;
-    flex-direction: column-reverse;
+    position: relative;
+    display: none;
+    
 }
 
+.container2.show{
+
+    display: flex;
+ 
+}
+
+.continueButton {
+
+    display: none;
+ 
+}
+
+.continueButton.show {
+
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    right:0;
+    background-color: rgba(255, 255, 255, 0.1);
+  
+
+}
+
+
+.continueButton.show button {
+
+width: 250px;
+height: 50px;
+background-color: rgb(42, 39, 39);
+color: white;
+border: 1px solid rgb(0, 0, 0);
+font-size: 20px;
+transition: all 1s ease-out;
+}
+
+.continueButton.show button:hover {
+
+    background-color: white;
+    color: rgb(0, 0, 0);
+   
+    }
+
+.continueHeader {
+
+    font-size: 25px;
+    margin-bottom: 50px;
+}
 .gameboard {
 border: black 1px solid;
  display: grid;
@@ -29,9 +161,26 @@ border: black 1px solid;
 
 }
 
+.gameboard.display {
+
+    opacity: 0.5;
+    border: 1px solid lightblue;
+
+}
+
+
 .gamecell {
     border: 1px solid black;
     cursor: pointer;
+    user-select: none;
+    
+}
+
+.gamcell:focus {
+
+
+
+    
 }
 
 .missed {
@@ -40,7 +189,7 @@ border: black 1px solid;
 .missed::after {
 
     content: url("./dot-svgrepo-com.svg");
- 
+
 
 }
 
@@ -55,9 +204,8 @@ border: black 1px solid;
     content: url("./cross-square-svgrepo-com.svg");
     color: red;
     
-
-
 }
+
 
 .inactive {
 
@@ -84,5 +232,11 @@ border: black 1px solid;
 .sunk {
     border: 1px solid red;
 
+}
+
+.gameOver {
+
+    pointer-events: none;
+    opacity: 0.5;
 }
 

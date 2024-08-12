@@ -120,7 +120,7 @@ class gameBoard {
           a--;
           if (
             this.board[a][b].ship instanceof ship ||
-            !this.board[x][y].validCell
+            !this.board[a][b].validCell
           ) {
             collided = true;
             console.log("index 1");
@@ -138,7 +138,7 @@ class gameBoard {
           b++;
           if (
             this.board[a][b].ship instanceof ship ||
-            !this.board[x][y].validCell
+            !this.board[a][b].validCell
           ) {
             collided = true;
             console.log("index 2");
@@ -156,7 +156,7 @@ class gameBoard {
           b--;
           if (
             this.board[a][b].ship instanceof ship ||
-            !this.board[x][y].validCell
+            !this.board[a][b].validCell
           ) {
             console.log("index 3");
             collided = true;
@@ -254,8 +254,9 @@ class gameBoard {
           }
         });
       });
+      return true
     } else {
-      console.log("No path found");
+      return false
     }
 
     /* function for making the cells bording ship invalid */
@@ -272,6 +273,26 @@ class gameBoard {
       ];
       return bordingCells;
     }
+
+
+  }
+
+
+  randomShipPlacement() {
+    const length =  [1,3,4,1,3,2,5,3]
+    let z = 1
+    while(length.length>0) {
+      const x = Math.floor(Math.random()*10)
+      const y = Math.floor(Math.random()*10)
+      console.log(z++)
+      const movenumber = Math.floor(Math.random()*3)
+      const move = ["down", "up", "right", "left"]
+    if (this.placeTheShip(x,y,length[length.length-1],move[movenumber])===false){
+      continue
+    }
+    else length.pop()
+  }
+
   }
   recieveAttack([x, y]) {
     if (
@@ -302,3 +323,8 @@ class Player {
     playerBoard.recieveAttack([x, y]);
   }
 }
+
+
+
+
+
