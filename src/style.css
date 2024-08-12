@@ -1,242 +1,199 @@
 * {
-    margin: 0;
-    padding: 0;
-    font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
-    font-size: 16px;
+  margin: 0;
+  padding: 0;
+  font-family: Impact, Haettenschweiler, "Arial Narrow Bold", sans-serif;
+  font-size: 16px;
 }
 
 h1 {
-margin-top: 5%;
+  margin-top: 5%;
   text-align: center;
   font-size: 3rem;
 }
 
 .winnerHeader {
-    margin-top: 40px;
-    text-align: center;
-    font-size: 1.5rem;
+  margin-top: 40px;
+  text-align: center;
+  font-size: 1.5rem;
 }
 
 .playercontainer {
-    width: 300px;
-    margin: 6% auto;
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
+  width: 300px;
+  margin: 6% auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
 }
 
 label {
-
-    display: inline-block;
-    width: 100px;
+  display: inline-block;
+  width: 100px;
 }
 
 input {
-
-    width: 167px;
-    margin-left: 7px;
+  width: 167px;
+  margin-left: 7px;
 }
 select {
-    width: 170px;
-    margin-left: 5px;
+  width: 170px;
+  margin-left: 5px;
 }
 
 .startgameButton button {
-
-    width: 278px;
-    height: 25px;
-
-
+  width: 278px;
+  height: 25px;
 }
 
 .startgameButton {
-    margin-top: 15px;
-    width: 300px;
-
+  margin-top: 15px;
+  width: 300px;
 }
 
 .headGameContainer {
-    display:flex;
-    flex-direction: column;
-    width: 800px;
-    gap:20%;
-    margin: 5% auto;
+  display: flex;
+  flex-direction: column;
+  width: 800px;
+  gap: 20%;
+  margin: 5% auto;
 }
 
 .playerheader {
-
-    position: absolute;
-    width: 300px;
-    bottom: -10px;
-    left: 30px;
-    font-size: 30px;
-  
+  position: absolute;
+  width: 300px;
+  bottom: -10px;
+  left: 30px;
+  font-size: 30px;
 }
 .gridtextone {
-    position: absolute;
-    left: 30px;
+  position: absolute;
+  left: 30px;
 }
 
 .gridtexttwo {
-
-    position: absolute;
-    left: 390px;
+  position: absolute;
+  left: 390px;
 }
 .container {
-    position: relative;
-    display: none;
-    flex-direction: row-reverse;
-    justify-content: start;
-    
+  position: relative;
+  display: none;
+  flex-direction: row-reverse;
+  justify-content: start;
 }
 
 .container.show {
-    display:flex;
+  display: flex;
 }
 
 .container2 {
-    position: relative;
-    display: none;
-    
+  position: relative;
+  display: none;
 }
 
-.container2.show{
-
-    display: flex;
- 
+.container2.show {
+  display: flex;
 }
 
 .continueButton {
-
-    display: none;
- 
+  display: none;
 }
 
 .continueButton.show {
-
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    position: fixed;
-    left: 0;
-    top: 0;
-    bottom: 0;
-    right:0;
-    background-color: rgba(255, 255, 255, 0.1);
-  
-
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  left: 0;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
-
 .continueButton.show button {
-
-width: 250px;
-height: 50px;
-background-color: rgb(42, 39, 39);
-color: white;
-border: 1px solid rgb(0, 0, 0);
-font-size: 20px;
-transition: all 1s ease-out;
+  width: 250px;
+  height: 50px;
+  background-color: rgb(42, 39, 39);
+  color: white;
+  border: 1px solid rgb(0, 0, 0);
+  font-size: 20px;
+  transition: all 1s ease-out;
 }
 
 .continueButton.show button:hover {
-
-    background-color: white;
-    color: rgb(0, 0, 0);
-   
-    }
+  background-color: white;
+  color: rgb(0, 0, 0);
+}
 
 .continueHeader {
-
-    font-size: 25px;
-    margin-bottom: 50px;
+  font-size: 25px;
+  margin-bottom: 50px;
 }
 .gameboard {
-border: black 1px solid;
- display: grid;
- grid-template-columns: repeat(10,30px);
- grid-template-rows: repeat(10,30px);
- margin: 30px;
-
+  border: black 1px solid;
+  display: grid;
+  grid-template-columns: repeat(10, 30px);
+  grid-template-rows: repeat(10, 30px);
+  margin: 30px;
 }
 
 .gameboard.display {
-
-    opacity: 0.5;
-    border: 1px solid lightblue;
-
+  opacity: 0.5;
+  border: 1px solid lightblue;
 }
-
 
 .gamecell {
-    border: 1px solid black;
-    cursor: pointer;
-    user-select: none;
-    
+  border: 1px solid black;
+  cursor: pointer;
+  user-select: none;
 }
 
-.gamcell:focus {
-
-
-
-    
+.game .gamecell:not(.missed):not(.hitShip):not(.showBorder):hover {
+ border: 2px solid green;
+ outline: 2px solid green;
+  background-color: rgb(153, 231, 153);
+  opacity: 0.5;
 }
 
-.missed {
-    cursor: default;
+.gamecell.missed {
+  cursor: default;
 }
 .missed::after {
-
-    content: url("./dot-svgrepo-com.svg");
-
-
+  content: url("./dot-svgrepo-com.svg");
 }
 
-
 .hitShip {
-
-    border: 1px solid red;
+  border: 1px solid red;
 }
 
 .hitShip::after {
-
-    content: url("./cross-square-svgrepo-com.svg");
-    color: red;
-    
+  content: url("./cross-square-svgrepo-com.svg");
+  color: red;
 }
 
-
 .inactive {
-
-    opacity: 0.3;
-    pointer-events: none;
+  opacity: 0.3;
+  pointer-events: none;
 }
 
 .showBorder {
-
-
 }
 
 .showBorder::after {
-    content: url("./dot-svgrepo-com.svg");
-    opacity: 0.6;
+  content: url("./dot-svgrepo-com.svg");
+  opacity: 0.6;
 }
 
 .ship {
-    border: 1px solid blue;
-    background-color: lightblue;
-    
+  border: 1px solid blue;
+  background-color: lightblue;
 }
 
 .sunk {
-    border: 1px solid red;
-
+  border: 1px solid red;
 }
 
 .gameOver {
-
-    pointer-events: none;
-    opacity: 0.5;
+  pointer-events: none;
+  opacity: 0.5;
 }
-
