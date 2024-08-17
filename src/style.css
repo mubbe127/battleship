@@ -78,36 +78,56 @@ select {
   display: none;
   flex-direction: row-reverse;
   justify-content: start;
+  opacity: 0;
+  transition:
+    opacity 0.5s linear,
+    display 0.5s allow-discrete linear;
 }
 
 .container.show {
   display: flex;
+  opacity: 1;
+
 }
 
 .container2 {
   position: relative;
   display: none;
+  opacity: 0;
+  transition:
+    opacity 0.5s linear,
+    display 0.5s allow-discrete linear;
 }
 
 .container2.show {
   display: flex;
+  opacity: 1;
 }
 
 .continueButton {
-  display: none;
-}
-
-.continueButton.show {
-  display: flex;
+  display:flex;
+  visibility: hidden;
   flex-direction: column;
   justify-content: center;
   align-items: center;
   position: fixed;
+  opacity: 0;
   left: 0;
   top: 0;
   bottom: 0;
   right: 0;
+
+  
+  
+}
+
+.continueButton.show {
+  visibility: visible;
+  opacity: 1;
   background-color: rgba(255, 255, 255, 0.1);
+  transition: all 1s;
+
+
 }
 
 .continueButton.show button {
@@ -117,7 +137,7 @@ select {
   color: white;
   border: 1px solid rgb(0, 0, 0);
   font-size: 20px;
-  transition: all 1s ease-out;
+ 
 }
 
 .continueButton.show button:hover {
@@ -135,6 +155,7 @@ select {
   grid-template-columns: repeat(10, 30px);
   grid-template-rows: repeat(10, 30px);
   margin: 30px;
+  
 }
 
 .gameboard.display {

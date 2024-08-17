@@ -1,4 +1,4 @@
-import {ship} from "./module.js" 
+import {gameBoard, ship} from "./module.js" 
 
 describe('matching cities to foods', () => {
     let theship;
@@ -26,4 +26,19 @@ describe('matching cities to foods', () => {
   
   });
   
-  
+  describe('test the gameboard class', () => {
+    let gameboard;
+    beforeEach(()=>{
+
+      gameboard = new gameBoard("playerOne")
+    })
+
+    test("test possiblemoves", ()=>{
+      console.log(gameboard)
+      expect(gameboard.possibleMoves(1,5,4)).toEqual([[4,5],0,[1,8],[1,2]])
+      expect(gameboard.possibleMoves(3,1,4)).toEqual([[6,1],[0,1],[3,4],0])
+    })
+
+    test("")
+
+  })

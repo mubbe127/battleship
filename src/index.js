@@ -9,8 +9,7 @@ let currentPlayer;
 const playerselect = document.querySelector("#player-select");
 const container = document.querySelector(".container");
 const container2 = document.querySelector(".container2");
-container2.classList.add("show")
-
+container2.classList.add("show");
 
 playerselect.addEventListener("input", (event) => {
   if (event.currentTarget.value === "local") {
@@ -18,7 +17,7 @@ playerselect.addEventListener("input", (event) => {
     const playerOneContainer = document.createElement("div");
     playerOneContainer.classList.add("playercontainerOne");
     const playerTwoContainer = document.createElement("div");
-    playerTwoContainer.classList.add("playercontaineTwo");
+    playerTwoContainer.classList.add("playercontainerTwo");
     const buttonContainer = document.createElement("div");
     buttonContainer.classList.add("startgameButton");
 
@@ -44,16 +43,15 @@ playerselect.addEventListener("input", (event) => {
     buttonStartGame.textContent = "Start game";
     buttonStartGame.addEventListener("click", () => {
       playerOne = new Player(playerOneInputName.value);
-      console.log(playerOne)
-      playerOne.gameBoard.randomShipPlacement()
+      console.log(playerOne);
+      playerOne.gameBoard.randomShipPlacement();
       playerTwo = new Player(playerTwoInputName.value);
-      playerTwo.gameBoard.randomShipPlacement()
-      console.log(playerTwo)
-      currentPlayer = playerOneInputName.value
-      makeBoard(playerOne)
-      makeBoard(playerTwo)
-      playercontainer.remove()
-      
+      playerTwo.gameBoard.randomShipPlacement();
+      console.log(playerTwo);
+      currentPlayer = playerOneInputName.value;
+      makeBoard(playerOne);
+      makeBoard(playerTwo);
+      playercontainer.remove();
     });
 
     playerOneContainer.appendChild(playerOnelabel);
@@ -62,29 +60,50 @@ playerselect.addEventListener("input", (event) => {
     playerTwoContainer.appendChild(playerTwoInputName);
     buttonContainer.appendChild(buttonStartGame);
   }
+
+  if (event.currentTarget.value === "Computer") {
+    const playercontainer = document.querySelector(".playercontainer");
+    const buttonStartGame = document.createElement("button");
+    const buttonContainer = document.createElement("div");
+    buttonContainer.classList.add("startgameButton");
+
+    playercontainer.appendChild(buttonContainer);
+    buttonContainer.appendChild(buttonStartGame);
+    buttonStartGame.setAttribute("id", "startGameButton");
+    buttonStartGame.textContent = "Start game";
+    buttonStartGame.addEventListener("click", () => {
+      playerOne = new Player("playerOne");
+      console.log(playerOne);
+      playerOne.gameBoard.randomShipPlacement();
+      playerTwo = new Player("Computer");
+      playerTwo.gameBoard.randomShipPlacement();
+      console.log(playerTwo);
+      currentPlayer = playerOne.name;
+      makeBoard(playerOne);
+      makeBoard(playerTwo);
+      playercontainer.remove();
+    });
+  }
 });
 
 function makeBoard(player) {
-  
   const playerGameBoard = player.gameBoard;
-  const playerHeaderOne = document.createElement('h3')
-  const playerHeaderTwo = document.createElement('h3')
-  playerHeaderOne.classList.add("playerheader", `${playerOne.name}`)
-  playerHeaderTwo.classList.add("playerheader", `${playerTwo.name}`)
-  playerHeaderOne.textContent=`${playerOne.name} turn`
-  playerHeaderTwo.textContent=`${playerTwo.name} turn`
-  const gridTextOne = document.createElement('h5')
-  const gridTextTwo = document.createElement('h5')
-  gridTextOne.classList.add("gridtextone", "gridheader")
-  gridTextTwo.classList.add("gridtexttwo", "gridheader")
-  gridTextOne.textContent="Your grid"
-  gridTextTwo.textContent="Opponent's grid"
+  const playerHeaderOne = document.createElement("h3");
+  const playerHeaderTwo = document.createElement("h3");
+  playerHeaderOne.classList.add("playerheader", `${playerOne.name}`);
+  playerHeaderTwo.classList.add("playerheader", `${playerTwo.name}`);
+  playerHeaderOne.textContent = `${playerOne.name} turn`;
+  playerHeaderTwo.textContent = `${playerTwo.name} turn`;
+  const gridTextOne = document.createElement("h5");
+  const gridTextTwo = document.createElement("h5");
+  gridTextOne.classList.add("gridtextone", "gridheader");
+  gridTextTwo.classList.add("gridtexttwo", "gridheader");
+  gridTextOne.textContent = "Your grid";
+  gridTextTwo.textContent = "Opponent's grid";
   const gameBoardDiv = document.createElement("div");
   const gameBoardDiv2 = document.createElement("div");
   gameBoardDiv.classList.add("gameboard", `${player.name}`, "game");
   gameBoardDiv2.classList.add("gameboard", `${player.name}`, "display");
-
-  console.log(player.name);
 
   if (player.name === playerOne.name) {
     gameBoardDiv.classList.add("inactive");
@@ -93,14 +112,14 @@ function makeBoard(player) {
     container.appendChild(gameBoardDiv);
     container2.appendChild(gameBoardDiv2);
     container2.appendChild(playerHeaderOne);
-    container2.appendChild(gridTextOne)
-    container2.appendChild(gridTextTwo)
+    container2.appendChild(gridTextOne);
+    container2.appendChild(gridTextTwo);
   } else {
     container.appendChild(gameBoardDiv2);
-    container.appendChild(playerHeaderTwo)
+    container.appendChild(playerHeaderTwo);
     container2.appendChild(gameBoardDiv);
-    container.appendChild(gridTextOne)
-    container.appendChild(gridTextTwo)
+    container.appendChild(gridTextOne);
+    container.appendChild(gridTextTwo);
   }
 
   let storeDomBoard1 = [];
@@ -122,27 +141,48 @@ function makeBoard(player) {
       if (playerGameBoard.board[i][j].ship) {
         gameCell2.classList.add("ship");
       }
+
       gameCell.addEventListener(
         "click",
-        function handleClick() {
-          if (player === playerOne) {
-            playerTwo.attack(playerGameBoard, [i, j]);
-          }
-          if (player === playerTwo) {
-            playerOne.attack(playerGameBoard, [i, j]);
-          }
-          console.log(gameCell);
-          console.log(playerGameBoard.board[i][j]);
 
-          renderBoard(
-            playerGameBoard,
-            i,
-            j,
-            gameCell,
-            gameCell2,
-            storeDomBoard1,
-            storeDomBoard2,
-          );
+        function handleClick() {
+          /* function for computer mode */
+          if (playerTwo.name === "Computer") {
+            playerTwo.receiveAttack([i, j]);
+            renderBoard(
+              playerGameBoard,
+              i,
+              j,
+              gameCell,
+              gameCell2,
+              storeDomBoard1,
+              storeDomBoard2,
+            );
+          
+            playerOne.receiveRandomAttack([i,j])
+
+
+          } 
+          /* function for local mode*/
+          else {
+            if (player.name === playerOne.name) {
+              playerOne.receiveAttack([i, j]);
+            }
+            if (player.name === playerTwo.name) {
+              playerTwo.receiveAttack([i, j]);
+            }
+    
+
+            renderBoard(
+              playerGameBoard,
+              i,
+              j,
+              gameCell,
+              gameCell2,
+              storeDomBoard1,
+              storeDomBoard2,
+            );
+          }
         },
         { once: true },
       );
@@ -161,8 +201,7 @@ function renderBoard(
   storeDomBoard1,
   storeDomBoard2,
 ) {
-  
-
+  console.log("hej");
   if (
     playerGameBoard.board[i][j].ship === null &&
     playerGameBoard.board[i][j].miss
@@ -176,7 +215,6 @@ function renderBoard(
     playerGameBoard.board[i][j].beenHit &&
     !playerGameBoard.board[i][j].ship.isSunk()
   ) {
-    
     gameCell.classList.add("hitShip");
     gameCell2.classList.add("hitShip");
     console.log("test");
@@ -186,7 +224,6 @@ function renderBoard(
     playerGameBoard.board[i][j].ship &&
     playerGameBoard.board[i][j].ship.isSunk()
   ) {
-   
     playerGameBoard.board[i][j].ship.coordinates.forEach(([nx, ny]) => {
       storeDomBoard1[nx][ny].classList.add("sunk");
       storeDomBoard2[nx][ny].classList.add("sunk");
@@ -200,30 +237,31 @@ function renderBoard(
     });
 
     if (playerGameBoard.allShipSunk()) {
-     
-      const gridheader = document.querySelectorAll('.gridheader')
-      const winnerHeader = document.createElement('h3')
-      winnerHeader.classList.add("winnerHeader")
-      gridheader.forEach(item=>item.remove())
-      const gameboards = document.querySelectorAll('.gameboard')
-      gameboards.forEach(item => item.classList.add("gameOver"))
-      container.classList.add("show")
-      container2.classList.add("show")
-        const playerheaderTwo = document.querySelector(`.playerheader.${playerTwo.name}`)
-        playerheaderTwo.textContent=`${playerTwo.name}`
-        const playerheaderOne = document.querySelector(`.playerheader.${playerOne.name}`)
-        playerheaderTwo.textContent=`${playerTwo.name}`
-        playerheaderOne.textContent=`${playerOne.name}`
+      const gridheader = document.querySelectorAll(".gridheader");
+      const winnerHeader = document.createElement("h3");
+      winnerHeader.classList.add("winnerHeader");
+      gridheader.forEach((item) => item.remove());
+      const gameboards = document.querySelectorAll(".gameboard");
+      gameboards.forEach((item) => item.classList.add("gameOver"));
+      container.classList.add("show");
+      container2.classList.add("show");
+      const playerheaderTwo = document.querySelector(
+        `.playerheader.${playerTwo.name}`,
+      );
+      playerheaderTwo.textContent = `${playerTwo.name}`;
+      const playerheaderOne = document.querySelector(
+        `.playerheader.${playerOne.name}`,
+      );
+      playerheaderTwo.textContent = `${playerTwo.name}`;
+      playerheaderOne.textContent = `${playerOne.name}`;
       if (playerGameBoard.player === playerOne.name) {
-    
-        winnerHeader.textContent=`${playerTwo.name} wins!`
-        const mainHeader = document.querySelector('.mainHeader')
-        mainHeader.appendChild(winnerHeader)
-
+        winnerHeader.textContent = `${playerTwo.name} wins!`;
+        const mainHeader = document.querySelector(".mainHeader");
+        mainHeader.appendChild(winnerHeader);
       } else {
-        winnerHeader.textContent=`${playerOne.name} wins!`
-        const mainHeader = document.querySelector('.mainHeader')
-        mainHeader.appendChild(winnerHeader)
+        winnerHeader.textContent = `${playerOne.name} wins!`;
+        const mainHeader = document.querySelector(".mainHeader");
+        mainHeader.appendChild(winnerHeader);
       }
     }
     return;
@@ -231,13 +269,16 @@ function renderBoard(
 
   /* check if game ended */
 
-  /* switch player */
  
+ if(playerTwo.name==="Computer") {
+  return
+ }
+  /* switch player */
   currentPlayer =
     currentPlayer === playerOne.name ? playerTwo.name : playerOne.name;
   const playerOneGameBoard = document.querySelector(`.${playerOne.name}.game`);
   const playerTwoGameBoard = document.querySelector(`.${playerTwo.name}.game`);
-  console.log(playerTwoGameBoard);
+
   console.log(currentPlayer);
 
   if (currentPlayer === playerOne.name) {
@@ -250,22 +291,16 @@ function renderBoard(
     playerTwoGameBoard.classList.add("inactive");
   }
 
-  
-  const continueButton = document.querySelector(".continueButton")
-  const continueHeader = document.querySelector('.continueHeader')
-  continueHeader.textContent=`${currentPlayer}'s turn`
-  continueButton.classList.add("show")
-  container.classList.remove("show")
-  container2.classList.remove("show")
-  continueButton.addEventListener('click', (event)=> {
-
-    event.currentTarget.classList.remove("show")
-    if(currentPlayer===playerOne.name) {
-      container2.classList.add("show")
-    }
-    else container.classList.add("show")
-  })
-
-
-  
+  const continueButton = document.querySelector(".continueButton");
+  const continueHeader = document.querySelector(".continueHeader");
+  continueHeader.textContent = `${currentPlayer}'s turn`;
+  continueButton.classList.add("show");
+  container.classList.remove("show");
+  container2.classList.remove("show");
+  continueButton.addEventListener("click", (event) => {
+    event.currentTarget.classList.remove("show");
+    if (currentPlayer === playerOne.name) {
+      container2.classList.add("show");
+    } else container.classList.add("show");
+  });
 }

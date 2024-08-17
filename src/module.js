@@ -38,6 +38,7 @@ function cell(i, j) {
   this.beenHit = false;
   this.value = [i, j];
   this.validCell = true;
+  this
 }
 
 class gameBoard {
@@ -64,7 +65,7 @@ class gameBoard {
     return x >= 0 && x < 10 && y >= 0 && y < 10;
   }
 
-  battlemove(x, y, length) {
+  possibleMoves(x, y, length) {
     const moves = [
       [x + length - 1, y],
       [x - length + 1, y],
@@ -173,8 +174,8 @@ class gameBoard {
     return finalarray;
   }
 
-  placeTheShip(x, y, length, move) {
-    let array = this.battlemove(x, y, length);
+ placeShip(x, y, length, move) {
+    let array = this.possibleMoves(x, y, length);
 
     console.log(array[3]);
 
@@ -199,9 +200,9 @@ class gameBoard {
       const [z, w] = array;
       /* denna if testar att om funktionen skulle matas koordinater
       att x eller y har samma koordinat som slutkordinat(vilket innebär en rak skepp) */
-      if (x !== z && y !== w) {
+     /* if (x !== z && y !== w) {
         return;
-      }
+      } */
       const newShip = new ship(length);
       this.ships.push(newShip);
       this.board[x][y].ship = newShip;
@@ -236,31 +237,18 @@ class gameBoard {
           newShip.coordinates.push([x, y]);
         }
       }
-
-      function containsCoordinate(arr, coord) {
-        return arr.some(([x, y]) => x === coord[0] && y === coord[1]);
-      }
-
-      newShip.coordinates.forEach((item) => {
-        const [nx, ny] = item;
-
-        const newarray = hej(nx, ny).filter(([nz, nw]) =>
-          this.isWithinBounds(nz, nw),
-        );
-        newarray.forEach(([nx, ny]) => {
-          this.board[nx][ny].validCell = false;
-          if (!this.board[nx][ny].ship && !containsCoordinate(newShip.borders, [nx,ny])) {
-            newShip.borders.push([nx, ny]);
-          }
-        });
-      });
+      this.invalidateBorder(newShip)
       return true
     } else {
       return false
     }
 
-    /* function for making the cells bording ship invalid */
-    function hej(x, y) {
+  
+  }
+
+  invalidateBorder(ship) {
+
+    function possibleBorder(x, y) {
       const bordingCells = [
         [x + 1, y],
         [x - 1, y],
@@ -274,9 +262,25 @@ class gameBoard {
       return bordingCells;
     }
 
+    function containsCoordinate(arr, coord) {
+      return arr.some(([x, y]) => x === coord[0] && y === coord[1]);
+    }
+
+    ship.coordinates.forEach((item) => {
+      const [nx, ny] = item;
+      const borderArray = possibleBorder(nx, ny).filter(([nz, nw]) =>
+        this.isWithinBounds(nz, nw),
+      );
+      borderArray.forEach(([nx, ny]) => {
+        this.board[nx][ny].validCell = false;
+        if (!this.board[nx][ny].ship && !containsCoordinate(ship.borders, [nx,ny])) {
+          ship.borders.push([nx, ny]);
+        }
+      });
+    });
+
 
   }
-
 
   randomShipPlacement() {
     const length =  [1,3,4,1,3,2,5,3]
@@ -287,25 +291,30 @@ class gameBoard {
       console.log(z++)
       const movenumber = Math.floor(Math.random()*3)
       const move = ["down", "up", "right", "left"]
-    if (this.placeTheShip(x,y,length[length.length-1],move[movenumber])===false){
+    if (this.placeShip(x,y,length[length.length-1],move[movenumber])===false){
       continue
     }
     else length.pop()
   }
 
   }
-  recieveAttack([x, y]) {
+  receiveAttack([x, y]) {
     if (
       this.board[x][y].ship instanceof ship &&
       this.board[x][y].beenHit === false
     ) {
       this.board[x][y].beenHit = true;
       this.board[x][y].ship.incrementHit();
+      if(this.board[x][y].ship.isSunk()) {
+
+      }
+
     } else if (this.board[x][y].beenHit === true) {
       return;
     } else {
       this.board[x][y].miss = true;
     }
+
   }
 
   allShipSunk() {
@@ -317,14 +326,42 @@ class Player {
   constructor(name) {
     this.name = name,
     this.gameBoard = new gameBoard(name);
+    this.attackedBoard = [...this.gameBoard]
+    this.array = this.createArray()
+  }
+  createArray() {
+    let array = []
+    for (let i = 0; i<10; i++) {
+      for (let j=0; j<10; j++) {
+        array.push([i,j])
+      }
+    }
+    return array
   }
 
-  attack(playerBoard, [x, y]) {
-    playerBoard.recieveAttack([x, y]);
+  receiveAttack([x, y]) {
+    this.gameBoard.receiveAttack([x, y]);
+  }
+
+
+  receiveRandomAttack(playerBoard){
+    
+    const number = Math.floor(Math.random()*this.array.length)
+
+    
+    playerBoard.recieveAttack([x,y])
+    this.array.splice(number,1)
+
+
+
   }
 }
 
 
 
 
+const gameboard = new gameBoard("player")
+
+
+const player = new Player("mubarek")
 
